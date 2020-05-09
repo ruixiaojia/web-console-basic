@@ -1,0 +1,38 @@
+#__next {
+    height: 100%;
+    overflow: hidden;
+}
+
+.main-layout-container {
+    height: 100%;
+
+    .sider-block {
+        width: 300px !important;
+        max-width: 300px !important;
+        height: 100%;
+        overflow: auto;
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+
+    .main-container {
+        height: 100%;
+        margin-left: 300px;
+
+        .header-block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            background-color: #fff;
+        }
+
+        .content-block {
+            margin: 24px;
+            padding: 16px;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+    }
+}
