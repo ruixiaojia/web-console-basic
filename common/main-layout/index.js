@@ -1,80 +1,109 @@
-import React from "react";
-import { Layout, Menu, Dropdown } from "antd";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Layout, Menu } from 'antd';
+import Router from 'next/router';
+import Icon, { CopyrightTwoTone } from '@ant-design/icons';
 
-import './index.scss'
+import menuList from "./config/menu-list";
+
+import './index.scss';
+
+const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
 
-export default class MainLayout extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      collapsed: false,
-    };
-  }
+function renderMenuItem(collapsed, toMenuPage) {
+  const menuEles = [];
+
+  const menuLoop = (menuList, isOneLevelMenu) => {
+    const menuArr = [];
+    if (!menuList) return menuArr;
+
+    menuList.forEach((item, index) => {
+      const { name, icon, path, sub } = item;
+      if (sub) {
+        const subMenus = menuLoop(item.sub);
+        if (subMenus.length) {
+          menuArr.push(
+            <SubMenu
+              key={`sub_${item.name + index}`}
+              title={
+                <span>
+                  {isOneLevelMenu ? <Icon component={icon} /> : null}
+                  {collapsed && isOneLevelMenu ? null : name}
+                </span>
+              }
+            >{subMenus}</SubMenu>
+          );
+        }
+      } else {
+        menuArr.push(
+          <Menu.Item onClick={() => toMenuPage(item)} key={path + index}>
+            <span>
+              {isOneLevelMenu ? <Icon component={icon} /> : null}
+              {collapsed && isOneLevelMenu ? null : name}
+            </span>
+          </Menu.Item>
+        );
+      }
+    });
+    return menuArr;
+  };
+  menuEles.push(menuLoop(menuList, true));
+  return menuEles;
+}
+
+
+class MainLayout extends React.Component {
+  state = {
+    collapsed: false,
+    menuList: [],
+  };
+
+  onCollapse = collapsed => {
+    this.setState({ collapsed });
+  };
+
+  toMenuPage = (item) => {
+    Router.push(item.path)
+    console.log(item, this, Router)
+  };
 
   render() {
-    const { props } = this;
-    const { collapsed, selectedKeys, openKeys, menuList } = this.state;
     return (
-      <div className="main-layout-container">
+      <Layout className="main-layout-container">
         <Sider
-          trigger={null}
           className="sider-block"
+          theme="light"
           collapsible
-          collapsed={collapsed}
-          collapsedWidth="80"
+          collapsed={this.state.collapsed}
+          onCollapse={this.onCollapse}
         >
-          {/* <div className={"al-logo"}>
-            <img
-                style={{
-                width: false === collapsed ? props.logoWidth || 210 : props.collapsedLogoWidth || 80,
-              }}
-                src={collapsed && props.collapsedLogo ? props.collapsedLogo : props.logo}
-            />
-          </div> */}
-          {/* <Menu
-              theme="dark"
-              mode="inline"
-              style={{ lineHeight: "64px" }}
-              onSelect={this.onSelect}
-              selectedKeys={selectedKeys}
-              onOpenChange={this.onOpenChange}
-              openKeys={openKeys}
-            // forceSubMenuRender={true}
+          <div className='logo'>
+            <img src="/static/images/logo.png" />
+          </div>
+          <Menu
+            theme="light"
+            mode="inline"
+            defaultSelectedKeys={['/home0']}
           >
-            {renderMenu({ ...props, menuList }, collapsed)}
-          </Menu> */}
+            {renderMenuItem(this.state.collapsed, this.toMenuPage)}
+          </Menu>
         </Sider>
-
+        
         <Layout className="main-container">
           <Header className="header-block">
-            { collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined /> }
-            <div className="header-right">
-              {/* {props.headerRightOperation ? (
-                props.headerRightOperation()
-              ) : (
-                <>
-                  <img className={"al-user-profile"} src={props.userProfile} />
-                  <Dropdown overlay={renderLoginMenu(props)} className={"al-user-info"}>
-                    <div>
-                      <span>{props.userName}</span>
-                      <Icon style={{ marginLeft: "6px" }} type="down" />
-                    </div>
-                  </Dropdown>
-                  <Dropdown overlay={renderLangmenu(props)} style={{ width: 200, marginLeft: 20 }}>
-                    <Icon style={{ fontSize: "18px" }} type="global" />
-                  </Dropdown>
-                </>
-              )} */}
-            </div>
+
           </Header>
+
           <Content className="content-block">
-            <div>{props.children}</div>
+            {this.props.children}
           </Content>
+
+          <Footer className="footer-block">
+            <CopyrightTwoTone twoToneColor='#f30' /> 2020 Created by ruixiaojia
+          </Footer>
         </Layout>
-      </div>
+      </Layout>
     );
   }
 }
+
+export default MainLayout;
