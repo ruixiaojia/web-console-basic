@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import "./index.scss";
+import style from "./index.scss";
 
 class Home extends React.Component {
     constructor () {
@@ -12,7 +12,7 @@ class Home extends React.Component {
 
     render () {
         return (
-            <div className={'home-container'}>
+            <div className={style['home-container']}>
                 Welcome to next.js!
                 <Button type="primary">Button</Button>
             </div>

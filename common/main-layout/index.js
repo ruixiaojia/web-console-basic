@@ -4,7 +4,8 @@ import Icon, { CopyrightTwoTone } from '@ant-design/icons';
 
 import menuList from "./config/menu-list";
 
-import './index.scss';
+import './common.scss';
+import style from './index.scss';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -68,15 +69,15 @@ class MainLayout extends React.Component {
 
   render() {
     return (
-      <Layout className="main-layout-container">
+      <Layout className={style["main-layout-container"]}>
         <Sider
-          className="sider-block"
+          className={style["sider-block"]}
           theme="light"
           collapsible
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
-          <div className='logo'>
+          <div className={style['logo']}>
             <img src="/static/images/logo.png" />
           </div>
           <Menu
@@ -88,16 +89,16 @@ class MainLayout extends React.Component {
           </Menu>
         </Sider>
         
-        <Layout className="main-container">
-          <Header className="header-block">
+        <Layout className={style["main-container"]}>
+          <Header className={style["header-block"]}>
 
           </Header>
 
-          <Content className="content-block">
+          <Content className={style["content-block"]}>
             {this.props.children}
           </Content>
 
-          <Footer className="footer-block">
+          <Footer className={["footer-block"]}>
             <CopyrightTwoTone twoToneColor='#f30' /> 2020 Created by ruixiaojia
           </Footer>
         </Layout>
