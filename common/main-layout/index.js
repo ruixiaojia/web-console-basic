@@ -4,7 +4,6 @@ import Icon, { CopyrightTwoTone } from '@ant-design/icons';
 
 import menuList from "./config/menu-list";
 
-import './common.scss';
 import style from './index.scss';
 
 const { Header, Content, Footer, Sider } = Layout;

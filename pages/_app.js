@@ -3,6 +3,8 @@ import App from 'next/app';
 import MainLayout from "../common/main-layout";
 import Container from "../common/container";
 
+import '../common/common.scss';
+
 class PageContainer extends App {
   render () {
     const { Component, pageProps } = this.props;
