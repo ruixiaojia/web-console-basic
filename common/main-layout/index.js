@@ -63,7 +63,6 @@ class MainLayout extends React.Component {
 
   toMenuPage = (item) => {
     Router.push(item.path)
-    console.log(item, this, Router)
   };
 
   render() {
@@ -77,7 +76,7 @@ class MainLayout extends React.Component {
           onCollapse={this.onCollapse}
         >
           <div className={style['logo']}>
-            <img src="/static/images/logo.png" />
+            <img src={require("../images/logo.png")} />
           </div>
           <Menu
             theme="light"
