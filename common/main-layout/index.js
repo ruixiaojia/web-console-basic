@@ -96,7 +96,7 @@ class MainLayout extends React.Component {
             {this.props.children}
           </Content>
 
-          <Footer className={["footer-block"]}>
+          <Footer className={style["footer-block"]}>
             <CopyrightTwoTone twoToneColor='#f30' /> 2020 Created by ruixiaojia
           </Footer>
         </Layout>
