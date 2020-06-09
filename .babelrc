@@ -1,6 +1,18 @@
 {
     "presets": ["next/babel"],
     "plugins": [
+      // ["@babel/plugin-proposal-decorators", {"legacy": true}],
+
+      // 根路径解析
+      [
+        "module-resolver",
+        {
+          "alias": {
+            "~": "./"
+          }
+        }
+      ],
+
       ["import", { "libraryName": "antd", "style": "css" }]
     ]
   }
