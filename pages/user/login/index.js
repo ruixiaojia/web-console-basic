@@ -21,7 +21,7 @@ class Home extends React.Component {
   };
 
   render () {
-  return (
+    return (
       <div className={style['user-login-container']}>
         <div className={style['login-block']}>
           <Form
