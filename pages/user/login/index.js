@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button, Form, Input } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import withRedux from '~/redux/redux'
 
 import style from "./index.scss";
 
+@withRedux
 class Home extends React.Component {
   constructor () {
     super();
