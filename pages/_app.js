@@ -1,40 +1,32 @@
 import React from "react";
 import App from 'next/app';
-import MainLayout from "../common/main-layout";
-import Container from "../common/container";
 
-import '../common/common.scss';
+import withRedux from '~/redux/redux'
+import MainLayout from "~/common/main-layout";
+import Container from "~/common/container";
 
-let simplePageList = ["/user/login"]
+import '~/common/common.scss';
 
+@withRedux
 class PageContainer extends App {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isSimplePage: true,
-    };
-  }
-
   componentDidMount() {
     const { router } = this.props;
-    
-    if (simplePageList.indexOf(router.route) === -1) {
-      this.setState({
-        isSimplePage: false,
-      })
+    if (false) {
+      // 未登录强制跳转至登录页
+      if (router.route !== "/user/login") {
+        router.replace("/user/login");
+      }
     }
   }
-  
+
   render () {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, router } = this.props;
+
     return (
       <Container>
-        {this.state.isSimplePage
-          ? <Component {...pageProps} />
-          : (<MainLayout>
-              <Component {...pageProps} />
-            </MainLayout>)
-        }
+        <MainLayout router={router}>
+          <Component {...pageProps} router={router} />
+        </MainLayout>
       </Container>
     );
   }

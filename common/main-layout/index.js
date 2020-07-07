@@ -2,7 +2,8 @@ import { Layout, Menu } from 'antd';
 import Router from 'next/router';
 import Icon, { CopyrightTwoTone } from '@ant-design/icons';
 
-import menuList from "./config/menu-list";
+import menuList from "./config/menu-list.config";
+import simplePageList from "./config/simple-page.config";
 
 import style from './index.scss';
 
@@ -50,12 +51,19 @@ function renderMenuItem(collapsed, toMenuPage) {
   return menuEles;
 }
 
-
 class MainLayout extends React.Component {
   state = {
+    isSimplePage: true,
     collapsed: false,
     menuList: [],
-  };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...state,
+      isSimplePage: simplePageList.indexOf(props.router.route) !== -1,
+    }
+  }
 
   onCollapse = collapsed => {
     this.setState({ collapsed });
@@ -66,6 +74,10 @@ class MainLayout extends React.Component {
   };
 
   render() {
+    if(this.state.isSimplePage) {
+      return this.props.children;
+    }
+
     return (
       <Layout className={style["main-layout-container"]}>
         <Sider
@@ -97,7 +109,7 @@ class MainLayout extends React.Component {
           </Content>
 
           <Footer className={style["footer-block"]}>
-            <CopyrightTwoTone twoToneColor='#f30' /> 2020 Created by ruixiaojia
+            <CopyrightTwoTone twoToneColor='#f30' /> 2020 Created by Ruixiaojia.
           </Footer>
         </Layout>
       </Layout>
