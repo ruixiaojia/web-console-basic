@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 
 import withRedux from '~/redux/redux'
+import { get, post } from '~/lib/io'
 import Counter from './components/counter'
 
 import style from "./index.scss";
@@ -18,6 +19,10 @@ class Home extends React.Component {
     return {
       initialProps: 1
     }
+  }
+
+  async componentDidMount() {
+    const data = await get('http://testyapi.akulaku.com/mock/65/installment/api/json/vendor/account/history/detail.do', {})
   }
 
   render () {
