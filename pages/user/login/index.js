@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button, Form, Input } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Button, Form, Input, notification } from 'antd';
+import { UserOutlined, LockOutlined, SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
+
 import withRedux from '~/redux/redux'
+import { get, post } from '~/lib/io'
 
 import style from "./index.scss";
 
@@ -14,12 +16,34 @@ class Home extends React.Component {
 
     };
   };
-  onFinish = values => {
-    console.log('Success:', values);
-  };
+  onFinish = async values => {
+    const { dispatch, router } = this.props;
 
-  onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+    const { success, data } = await get('http://testyapi.akulaku.com/mock/65/installment/api/json/vendor/account/history/detail.do', values);
+    if (success) {
+      dispatch({ type: "LOGIN_IN", options: data });
+
+      notification.open({
+        duration: 1.5,
+        message: 'Success',
+        description:
+          'Login successful, will jump',
+        icon: <SmileTwoTone twoToneColor="#52c41a" />,
+      });
+
+      setTimeout(() => {
+        router.push('/')
+      }, 1000)
+    } else {
+      notification.open({
+        duration: 3,
+        message: 'Failure',
+        description:
+          'Logon failure, account or password error',
+        icon: <FrownTwoTone twoToneColor="#f40" />,
+      });
+    }
+
   };
 
   render () {
@@ -27,9 +51,8 @@ class Home extends React.Component {
       <div className={style['user-login-container']}>
         <div className={style['login-block']}>
           <Form
-            name="basic"
+            name="user_login_form"
             onFinish={this.onFinish}
-            onFinishFailed={this.onFinishFailed}
           >
             <Form.Item
               name="username"
@@ -41,7 +64,7 @@ class Home extends React.Component {
               name="password"
               rules={[{ required: true, message: 'Please input your password!' }]}
             >
-              <Input prefix={<LockOutlined />} />
+              <Input.Password visibilityToggle={false} prefix={<LockOutlined />} />
             </Form.Item>
 
             <Button

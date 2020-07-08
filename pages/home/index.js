@@ -21,10 +21,6 @@ class Home extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    const data = await get('http://testyapi.akulaku.com/mock/65/installment/api/json/vendor/account/history/detail.do', {})
-  }
-
   render () {
     console.log('render', this.props)
     return (
@@ -33,7 +29,6 @@ class Home extends React.Component {
         <Counter />
         <Button type="primary" onClick={()=>{
           this.props.store.dispatch({ type: 'INCREMENT' })
-          console.log(this.props)
         }}>Button</Button>
       </div>
     );

@@ -10,11 +10,14 @@ import '~/common/common.scss';
 @withRedux
 class PageContainer extends App {
   componentDidMount() {
-    const { router } = this.props;
-    if (false) {
+    const { router, store } = this.props;
+    if (!store.getState().login.isSign) {
       // 未登录强制跳转至登录页
       if (router.route !== "/user/login") {
-        router.replace("/user/login");
+        router.replace({
+          pathname: '/user/login',
+          query: { return_url: router.route }
+        });
       }
     }
   }
