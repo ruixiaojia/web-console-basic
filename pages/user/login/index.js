@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, Input, notification } from 'antd';
 import { UserOutlined, LockOutlined, SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
+import JsCookies from "js-cookie";
 
 import withRedux from '~/redux/redux'
 import { get, post } from '~/lib/io'
@@ -11,45 +12,63 @@ import style from "./index.scss";
 class Home extends React.Component {
   constructor () {
     super();
-
     this.state = {
-
+      bgImg: require("./insung-yoon-igaImUQNYhA-unsplash.jpg"),
+      requesting: false,
     };
   };
   onFinish = async values => {
     const { dispatch, router } = this.props;
+    this.setState({
+      requesting: true,
+    });
 
-    const { success, data } = await get('http://testyapi.akulaku.com/mock/65/installment/api/json/vendor/account/history/detail.do', values);
-    if (success) {
-      dispatch({ type: "LOGIN_IN", options: data });
+    try {
+      const { success, data } = await post('/user/login', values);
+      if (success) {
+        dispatch({ type: "LOGIN_IN", options: data });
+        JsCookies.set("AUTHORIZATION", data.token);
 
-      notification.open({
-        duration: 1.5,
-        message: 'Success',
-        description:
-          'Login successful, will jump',
-        icon: <SmileTwoTone twoToneColor="#52c41a" />,
-      });
+        notification.open({
+          duration: 1.5,
+          message: 'Success',
+          description:
+            'Login successful, will jump',
+          icon: <SmileTwoTone twoToneColor="#52c41a" />,
+        });
+  
+        setTimeout(() => {
+          if (router.query.return_url) {
+            router.replace(router.query.return_url)
+          } else {
+            router.replace('/')
+          }
+        }, 1000)
+      } else {
+        notification.open({
+          duration: 3,
+          message: 'Failure',
+          description:
+            'Logon failure, account or password error',
+          icon: <FrownTwoTone twoToneColor="#f40" />,
+        });
+      }
+    } catch (err) {
 
-      setTimeout(() => {
-        router.push('/')
-      }, 1000)
-    } else {
-      notification.open({
-        duration: 3,
-        message: 'Failure',
-        description:
-          'Logon failure, account or password error',
-        icon: <FrownTwoTone twoToneColor="#f40" />,
-      });
     }
 
+    this.setState({
+      requesting: false,
+    })
   };
 
   render () {
+    const { requesting, bgImg } = this.state;
+
     return (
-      <div className={style['user-login-container']}>
-        <div className={style['login-block']}>
+      <div className={style['user_login_container']}>
+        <div className={style['background_block']} style={{backgroundImage: `url(${bgImg})`}} />
+        <div className={style['login_block']}>
           <Form
             name="user_login_form"
             onFinish={this.onFinish}
@@ -70,7 +89,9 @@ class Home extends React.Component {
             <Button
               type="primary"
               htmlType="submit"
-              className={style["btn-login"]}
+              className={style["btn_login"]}
+              loading={requesting}
+              disabled={requesting}
             >
               Login
             </Button>
