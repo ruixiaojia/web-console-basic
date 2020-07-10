@@ -1,13 +1,9 @@
 import React from 'react';
 import { Button } from 'antd';
 
-import withRedux from '~/redux/redux'
-import { get, post } from '~/lib/io'
 import Counter from './components/counter'
-
 import style from "./index.scss";
 
-@withRedux
 class Home extends React.Component {
   constructor (props) {
     super(props);

@@ -1,6 +1,7 @@
 import React from "react";
 import App from 'next/app';
 import JsCookies from "js-cookie";
+import _ from 'lodash'
 
 import withRedux from '~/redux/redux'
 import MainLayout from "~/common/main-layout";
@@ -18,21 +19,19 @@ class PageContainer extends App {
       const AuthToken = JsCookies.get("AUTHORIZATION");
       const getUser = await post('/user/getUser', '', {
         headers: {
-          Authorization: 'Bearer ' + AuthToken
+          Authorization: `Bearer ${AuthToken}`,
         }
       });
 
-      if (getUser) {
+      if (_.get(getUser, 'success')) {
         dispatch({ type: "LOGIN_IN", options: getUser.data });
       } else {
-        this.ForcedToLogin();
+        this.forcedToLogin();
       }
-    } else {
-      this.ForcedToLogin();
     }
   }
 
-  ForcedToLogin = () => {
+  forcedToLogin = () => {
     const { router } = this.props;
     if (router.route !== "/user/login") {
       router.replace({
@@ -43,12 +42,18 @@ class PageContainer extends App {
   };
 
   render () {
-    const { Component, pageProps, router } = this.props;
+    const { Component, pageProps, router, dispatch, store } = this.props;
+    const _props = {
+      ...pageProps,
+      store,
+      dispatch,
+      router,
+    };
 
     return (
       <Container>
-        <MainLayout router={router}>
-          <Component {...pageProps} router={router} />
+        <MainLayout {..._props} >
+          <Component {..._props} />
         </MainLayout>
       </Container>
     );

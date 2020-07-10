@@ -1,9 +1,11 @@
-import { Layout, Menu } from 'antd';
-import Router from 'next/router';
-import Icon, { CopyrightTwoTone } from '@ant-design/icons';
+import React, { Component } from "react";
+import { Layout, Menu, Dropdown, Avatar, Modal } from 'antd';
+import Icon, { CopyrightTwoTone, UserOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import JsCookies from "js-cookie";
 
 import menuList from "./config/menu-list.config";
 import simplePageList from "./config/simple-page.config";
+import { get, post } from '~/lib/io'
 
 import style from './index.scss';
 
@@ -70,14 +72,42 @@ class MainLayout extends React.Component {
   };
 
   toMenuPage = (item) => {
-    Router.push(item.path)
+    this.props.router.push(item.path)
+  };
+
+  signOut = () => {
+    const { dispatch, router } = this.props;
+
+    Modal.confirm({
+      title: 'Do you Want to sign out?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        JsCookies.remove("AUTHORIZATION");
+        dispatch({type: 'LOGIN_OUT'});
+        // 阻止退出登录后history back
+        window.location.replace('/user/login')
+      },
+      onCancel() {},
+    });
+  };
+
+  renderMenuList = () => {
+    return (
+      <Menu>
+        <Menu.Item onClick={() => { this.props.router.push('/home/user-settings')}}>
+          Settings
+        </Menu.Item>
+        <Menu.Item onClick={this.signOut}>
+          Sign out
+        </Menu.Item>
+      </Menu>
+    )
   };
 
   render() {
     if(this.state.isSimplePage) {
       return this.props.children;
     }
-
     return (
       <Layout className={style["main-layout-container"]}>
         <Sider
@@ -101,7 +131,10 @@ class MainLayout extends React.Component {
         
         <Layout className={style["main-container"]}>
           <Header className={style["header-block"]}>
-
+            <div></div>
+            <Dropdown overlay={this.renderMenuList} className={style["user_info"]}>
+              <Avatar size="small" icon={<UserOutlined />} />
+            </Dropdown>
           </Header>
 
           <Content className={style["content-block"]}>

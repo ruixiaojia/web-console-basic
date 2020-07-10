@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Form, Input, notification } from 'antd';
 import { UserOutlined, LockOutlined, SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
-import JsCookies from "js-cookie";
 
 import withRedux from '~/redux/redux'
 import { get, post } from '~/lib/io'
@@ -27,7 +26,6 @@ class Home extends React.Component {
       const { success, data } = await post('/user/login', values);
       if (success) {
         dispatch({ type: "LOGIN_IN", options: data });
-        JsCookies.set("AUTHORIZATION", data.token);
 
         notification.open({
           duration: 1.5,
