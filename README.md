@@ -19,8 +19,10 @@ $ npm run build
 $ npm run start
 ```
 
-## 待完善
-- 登录注册
-- withPage组件，页面通用功能集成
-- withRedux组件，redux功能集成
-- 页面鉴权
+## TODO:
+- 新用户注册
+- 密码修改
+
+- 静态资源列表页：上传、复制URL、预览、删除
+
+- excel解析页：解析为JSON，一键复制
