@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash'
 import { Button, Form, Input, notification } from 'antd';
 import { UserOutlined, LockOutlined, SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
 
@@ -60,7 +61,7 @@ class Home extends React.Component {
   };
 
   render () {
-    const { pageConfig } = this.props;
+    const { pageConfig = {} } = this.props;
     const { requesting } = this.state;
 
     return (
@@ -100,9 +101,10 @@ class Home extends React.Component {
   };
 }
 Home.getInitialProps = async (ctx) => {
-  const { success, data } = await post('/login/config/get')
-  if (success) {
-    return { pageConfig: data }
+  const resp = await post('/login/config/get')
+  if (_.get(resp, 'success')) {
+    return { pageConfig: _.get(resp, 'data', {}) }
   }
+  return {}
 }
 export default Home;
