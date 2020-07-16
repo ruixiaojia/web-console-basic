@@ -12,7 +12,6 @@ class Home extends React.Component {
   constructor () {
     super();
     this.state = {
-      bgImg: require("./insung-yoon-igaImUQNYhA-unsplash.jpg"),
       requesting: false,
     };
   };
@@ -61,11 +60,12 @@ class Home extends React.Component {
   };
 
   render () {
-    const { requesting, bgImg } = this.state;
+    const { pageConfig } = this.props;
+    const { requesting } = this.state;
 
     return (
       <div className={style['user_login_container']}>
-        <div className={style['background_block']} style={{backgroundImage: `url(${bgImg})`}} />
+        <div className={style['background_block']} style={{backgroundImage: `url(${pageConfig.imageUrl})`}} />
         <div className={style['login_block']}>
           <Form
             name="user_login_form"
@@ -98,5 +98,11 @@ class Home extends React.Component {
       </div>
     );
   };
+}
+Home.getInitialProps = async (ctx) => {
+  const { success, data } = await post('/login/config/get')
+  if (success) {
+    return { pageConfig: data }
+  }
 }
 export default Home;

@@ -2,7 +2,9 @@
   height: 100%;
 
   .sider-block {
+    position: relative;
     height: 100%;
+    overflow-y: scroll;
 
     .ant-menu {
       border: 0;
@@ -16,6 +18,10 @@
         width: 50px;
         height: 50px;
       }
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 
@@ -31,8 +37,9 @@
     }
 
     .content-block {
-      margin: 24px 24px 0 24px;
+      overflow: auto;
       padding: 16px;
+      margin: 24px 24px 0 24px;
       border-radius: 4px;
       background-color: #fff;
     }

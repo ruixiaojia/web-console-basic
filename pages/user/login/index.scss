@@ -4,8 +4,8 @@
   height: 100%;
 
   animation: fade-in;
-  animation-duration: 1s;
-  -webkit-animation: fade-in 1s;
+  animation-duration: 1.5s;
+  -webkit-animation: fade-in 1.5s;
 
   .background_block {
     width: 100%;
@@ -14,10 +14,6 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-  }
-  
-  .login_block {
-
   }
 
   .login_block {
@@ -41,12 +37,12 @@
 
 @keyframes fade-in {  
   0% {opacity: 0;}
-  40% {opacity: 0;}
+  70% {opacity: 0;}
   100% {opacity: 1;}
 }
 
 @-webkit-keyframes fade-in {
   0% {opacity: 0;}  
-  40% {opacity: 0;}
+  70% {opacity: 0;}
   100% {opacity: 1;}  
 }  
