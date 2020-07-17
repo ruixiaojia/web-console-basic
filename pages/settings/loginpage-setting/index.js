@@ -124,8 +124,9 @@ class Home extends React.Component {
         </Spin>
 
         <Modal
-          visible={previewVisible}
+          width='60%'
           title={previewTitle}
+          visible={previewVisible}
           onOk={() => {this.handleStatusCheck('previewVisible')}}
           onCancel={() => {this.handleStatusCheck('previewVisible')}}
         >

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Layout, Menu, Dropdown, Avatar, Modal } from 'antd';
-import Icon, { CopyrightTwoTone, UserOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import Icon, { CopyrightTwoTone, UserOutlined, ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import JsCookies from "js-cookie";
+import _get from 'lodash/get';
 
 import menuList from "./config/menu-list.config";
 import simplePageList from "./config/simple-page.config";
@@ -105,6 +106,8 @@ class MainLayout extends React.Component {
   };
 
   render() {
+    const { store } = this.props;
+
     if(this.state.isSimplePage) {
       return this.props.children;
     }
@@ -130,10 +133,14 @@ class MainLayout extends React.Component {
         </Sider>
         
         <Layout className={style["main-container"]}>
-          <Header className={style["header-block"]}>
+          <Header className={style["header_block"]}>
             <div></div>
-            <Dropdown overlay={this.renderMenuList} className={style["user_info"]}>
-              <Avatar size="small" icon={<UserOutlined />} />
+            <Dropdown overlay={this.renderMenuList}>
+              <div>
+                <Avatar size="small" icon={<UserOutlined />} src={_get(store.getState(), 'login.userInfo.avatar', '')} />
+                <span className={style["user_name"]}>{_get(store.getState(), 'login.userInfo.username', '')}</span>
+                <DownOutlined />
+              </div>
             </Dropdown>
           </Header>
 

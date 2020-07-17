@@ -28,12 +28,18 @@
   .main-container {
     height: 100%;
 
-    .header-block {
+    .header_block {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
       background-color: #fff;
+
+      .user_name {
+        color: #999;
+        font-size: 16px;
+        margin: 0 8px;
+      }
     }
 
     .content-block {
